@@ -1,10 +1,13 @@
 import supabase from './supabaseClient';
 
 //Signing in with MagicLink
-export const signInWithMagicLink = async(email) => {
-    console.log(email); 
-    const { error } = await supabase.auth.signInWithOtp(email); //Magic Link is sent 
-    if (error) throw error; 
+export const signInWithMagicLink = async(email: string) => {
+    
+    const { error } = await supabase.auth.signInWithOtp({email}); //Magic Link is sent 
+    if (error) {
+        console.error("MagicLink error: " + error.message); 
+        throw error; 
+    }; 
 }
 
 /*

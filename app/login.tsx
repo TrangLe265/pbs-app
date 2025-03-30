@@ -8,9 +8,15 @@ export default function LoginScreen() {
     const [message, setMessage] = useState(''); 
 
     const handleLogIn= async(event: React.FormEvent) => {
-        event.preventDefault(); 
+        if (!email.trim()){
+            setMessage("Please enter a valid email."); 
+            return; 
+        }
+
+        console.log("Attempt logging in with: ", email)
         try {
             await signInWithMagicLink(email); 
+            console.log("trying to connect")
             setMessage('Please confirm with your email!')
         } catch (error){
             if (error instanceof Error) {
@@ -37,9 +43,10 @@ export default function LoginScreen() {
                     width={200}
                 />
                 <LineSeperator />
-                <Button onPress={handleLogIn}>
+                <Button onPress={() => handleLogIn()}>
                     <Paragraph>Continue</Paragraph>
                 </Button>
+                <Paragraph>{message}</Paragraph>
         </Container>
     );
 }
