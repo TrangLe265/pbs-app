@@ -15,65 +15,48 @@ import { Ionicons } from '@expo/vector-icons';
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-      return null;
-  }
+  const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
   return (
     <TamaguiProvider config={config}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Theme name={"dark_blue"}>
-        <Stack>
-          <Stack.Screen 
-            name="(modals)/login"
-            options={{
-              presentation: 'modal',
-              title: 'Log in or sign up', 
-              headerLeft: () => (
-                <TouchableOpacity onPress={() => router.back()}>
-                  <Ionicons name="close-outline" size={28} />
-                </TouchableOpacity>),
-            }} 
-          />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-
-          <Stack.Screen 
-            name="(modals)/bench" 
-            options={{ 
-              presentation: 'modal',
-              animation: 'fade',
-              headerShown: true, 
-              headerTitle: 'All Bench PRs' }} 
-            />
+          <Stack>
             <Stack.Screen 
-            name="(modals)/deadlift" 
-            options={{ 
-              presentation: 'modal',
-              animation: 'fade',
-              headerShown: true, 
-              headerTitle: 'All Deadlift PRs' }} 
+              name="(modals)/login"
+              options={{
+                presentation: 'modal',
+                title: 'Log in or sign up', 
+              }} 
             />
-            <Stack.Screen 
-            name="(modals)/squat" 
-            options={{ 
-              presentation: 'modal',
-              animation: 'fade',
-              headerShown: true, 
-              headerTitle: 'All Squat PRs' }} 
-            />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
-        </Stack>
+            <Stack.Screen 
+              name="(modals)/bench" 
+              options={{ 
+                presentation: 'modal',
+                animation: 'fade',
+                headerShown: true, 
+                headerTitle: 'All Bench PRs' }} 
+              />
+              <Stack.Screen 
+              name="(modals)/deadlift" 
+              options={{ 
+                presentation: 'modal',
+                animation: 'fade',
+                headerShown: true, 
+                headerTitle: 'All Deadlift PRs' }} 
+              />
+              <Stack.Screen 
+              name="(modals)/squat" 
+              options={{ 
+                presentation: 'modal',
+                animation: 'fade',
+                headerShown: true, 
+                headerTitle: 'All Squat PRs' }} 
+              />
+
+          </Stack>
         </Theme>
         </GestureHandlerRootView>
     </TamaguiProvider>     
