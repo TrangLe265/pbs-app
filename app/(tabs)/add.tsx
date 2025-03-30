@@ -52,13 +52,13 @@ export default function addScreen(){
                     <SubTitle>Select lift type</SubTitle>
 
                     <XStack gap="$2" justifyContent="center"> 
-                        <Button size="$3" theme="accent">
+                        <Button size="$3" theme="active">
                             Squat
                         </Button>
-                        <Button size="$3" theme="accent">
+                        <Button size="$3" theme="active">
                             Bench
                         </Button>
-                        <Button size="$3" theme="accent">
+                        <Button size="$3" theme="active">
                             Deadlift
                         </Button>
                     </XStack>
@@ -66,19 +66,23 @@ export default function addScreen(){
     
 
                     <SubTitle>Enter weight</SubTitle>
-                    <Input width={200} flex={1} size={50} placeholder={`(kg)`} />
+                    <Input width={200} flex={1} size={50} placeholder={`(kg)`} autoFocus={true} />
                     <LineSeperator/>
                     <SubTitle>Select date</SubTitle>
                         <DateTimePicker
                             value={date}
                             mode="date"
                             display="default"
-                            onChange={(e) => onChange(e,date)}
+                            onChange={(event, selectedDate) => {
+                                if (selectedDate) {
+                                    setDate(selectedDate);
+                                }
+                            }}
                         />
 
                    <LineSeperator/>
                     <Form.Trigger asChild disabled={status !== ''}>
-                        <Button icon={status === 'submitting' ? () => <Spinner /> : undefined}>
+                        <Button icon={status === 'submitting' ? () => <Spinner /> : undefined} theme={"active"}>
                         Submit
                         </Button>
                     </Form.Trigger>

@@ -10,7 +10,6 @@ export default function IndexScreen() {
 
     return (
         <>
-        <Link href="/(modals)/login" >Login test</Link>
         <Container>
             <Title>Find all your PRs here </Title>
             <LineSeperator/>

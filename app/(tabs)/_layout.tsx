@@ -11,38 +11,39 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 export default function TabLayout() {
   
   return (
+    //layout of the main bottom tab navigation 
     <Tabs
       screenOptions={{
       headerShown: true,
       tabBarButton: HapticTab,
       tabBarBackground: TabBarBackground,
       tabBarStyle: Platform.select({
-        ios: {
-        // Use a transparent background on iOS to show the blur effect
-        position: 'absolute',
-        },
-        default: {},
+      ios: {
+      // Use a transparent background on iOS to show the blur effect
+      position: 'absolute',
+      },
+      default: {},
       }),
       }}>
       <Tabs.Screen
       name="index"
       options={{
-        title: 'Home',
-        tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+      title: 'Records',
+      tabBarIcon: ({ color }) => <IconSymbol size={28} name="doc.text.fill" color={color} />,
       }}
       />
       <Tabs.Screen
       name="add"
       options={{
-        title: 'Add',
-        tabBarIcon: ({ color }) => <IconSymbol size={28} name="plus.circle.fill" color={color} />,
+      title: 'Add New',
+      tabBarIcon: ({ color }) => <IconSymbol size={28} name="plus.circle.fill" color={color} />,
       }}
       />
       <Tabs.Screen
       name="profile"
       options={{
-        title: 'Profile',
-        tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.crop.circle.fill" color={color} />,
+      title: 'Profile',
+      tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.crop.circle.fill" color={color} />,
       }}
       />
     </Tabs>
