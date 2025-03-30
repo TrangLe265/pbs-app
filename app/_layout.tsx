@@ -1,22 +1,18 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import 'react-native-reanimated';
-import { createTamagui,TamaguiProvider, View } from 'tamagui'; 
-import { defaultConfig } from '@tamagui/config/v4'; 
+import { createTamagui,TamaguiProvider, Theme, View } from 'tamagui'; 
+import config from '@/tamagui.config';
+import { GestureHandlerRootView, TouchableOpacity } from 'react-native-gesture-handler';
+import { Ionicons } from '@expo/vector-icons';
 
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
-const config = createTamagui(defaultConfig); 
-type Conf = typeof config; 
-
-declare module '@tamagui/core' {
-  interface TamaguiCustomConfig extends Conf {}
-}
 
 export default function RootLayout() {
 
@@ -36,35 +32,50 @@ export default function RootLayout() {
 
   return (
     <TamaguiProvider config={config}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-
-        <Stack.Screen 
-          name="(modals)/bench" 
-          options={{ 
-            presentation: 'modal',
-            animation: 'fade',
-            headerShown: true, 
-            headerTitle: 'Bench' }} 
-          />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Theme name={"dark_blue"}>
+        <Stack>
           <Stack.Screen 
-          name="(modals)/deadlift" 
-          options={{ 
-            presentation: 'modal',
-            animation: 'fade',
-            headerShown: true, 
-            headerTitle: 'Deadlift' }} 
+            name="(modals)/login"
+            options={{
+              presentation: 'modal',
+              title: 'Log in or sign up', 
+              headerLeft: () => (
+                <TouchableOpacity onPress={() => router.back()}>
+                  <Ionicons name="close-outline" size={28} />
+                </TouchableOpacity>),
+            }} 
           />
-          <Stack.Screen 
-          name="(modals)/squat" 
-          options={{ 
-            presentation: 'modal',
-            animation: 'fade',
-            headerShown: true, 
-            headerTitle: 'Squat' }} 
-          />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
-      </Stack>
+          <Stack.Screen 
+            name="(modals)/bench" 
+            options={{ 
+              presentation: 'modal',
+              animation: 'fade',
+              headerShown: true, 
+              headerTitle: 'All Bench PRs' }} 
+            />
+            <Stack.Screen 
+            name="(modals)/deadlift" 
+            options={{ 
+              presentation: 'modal',
+              animation: 'fade',
+              headerShown: true, 
+              headerTitle: 'All Deadlift PRs' }} 
+            />
+            <Stack.Screen 
+            name="(modals)/squat" 
+            options={{ 
+              presentation: 'modal',
+              animation: 'fade',
+              headerShown: true, 
+              headerTitle: 'All Squat PRs' }} 
+            />
+
+        </Stack>
+        </Theme>
+        </GestureHandlerRootView>
     </TamaguiProvider>     
     
   );

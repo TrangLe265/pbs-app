@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Text, View, StyleSheet } from "react-native"; 
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Button, Input, TextArea, XStack, YStack, Form, Spinner, H4, ScrollView, Paragraph, Separator} from 'tamagui'; 
+import { Button, Input, TextArea, XStack, YStack, Form, Spinner, H4, ScrollView, Paragraph} from 'tamagui'; 
+import { Container, SubTitle, Title, LineSeperator } from "@/tamagui.config";
 
 export default function addScreen(){
     const [date, setDate] = useState(new Date()); 
@@ -26,7 +27,7 @@ export default function addScreen(){
     },[status])
 
     return (
-        <SafeAreaView style={styles.container}>
+        <Container>
         
             <ScrollView maxHeight={600}
                     width="95%"
@@ -34,7 +35,8 @@ export default function addScreen(){
                     borderRadius="$4">
 
                 <YStack>
-                <H4>Add a new record</H4>
+                <Title>Add a new record</Title>
+               
                 
                 <Form
                     alignItems="center"
@@ -47,7 +49,7 @@ export default function addScreen(){
                     borderColor="$borderColor"
                     padding="$8"
                 >
-                    <Paragraph>Select lift type</Paragraph>
+                    <SubTitle>Select lift type</SubTitle>
 
                     <XStack gap="$2" justifyContent="center"> 
                         <Button size="$3" theme="accent">
@@ -60,21 +62,21 @@ export default function addScreen(){
                             Deadlift
                         </Button>
                     </XStack>
+                    <LineSeperator/>
+    
 
-                    <Separator marginVertical={5}/>
-
-                    <Paragraph>Enter weight</Paragraph>
+                    <SubTitle>Enter weight</SubTitle>
                     <Input width={200} flex={1} size={50} placeholder={`(kg)`} />
-                    <Separator marginVertical={15} />
-            
-                        <Paragraph>Select date</Paragraph>
+                    <LineSeperator/>
+                    <SubTitle>Select date</SubTitle>
                         <DateTimePicker
                             value={date}
                             mode="date"
                             display="default"
                             onChange={(e) => onChange(e,date)}
                         />
-                   <Separator marginVertical={15} />
+
+                   <LineSeperator/>
                     <Form.Trigger asChild disabled={status !== ''}>
                         <Button icon={status === 'submitting' ? () => <Spinner /> : undefined}>
                         Submit
@@ -86,16 +88,6 @@ export default function addScreen(){
 
             </ScrollView> 
             
-        </SafeAreaView>
+        </Container>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#f8f8f8",
-        paddingHorizontal: 16,
-    },
-})
