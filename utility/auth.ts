@@ -1,6 +1,7 @@
 import supabase from './supabaseClient';
 
 //Signing in with MagicLink
+
 export const signInWithMagicLink = async(email: string) => {
     
     const { error } = await supabase.auth.signInWithOtp({email}); //Magic Link is sent 

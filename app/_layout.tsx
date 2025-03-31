@@ -30,7 +30,7 @@ export default function RootLayout() {
 
     // Listen for auth changes (login/logout)
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      setIsLoggedIn(!!session);
+      setIsLoggedIn(!!session);//'!!' turns object into boolean value
       if (session) {
         router.replace('/add'); // Redirect if logged in
       } else {
@@ -38,7 +38,7 @@ export default function RootLayout() {
       }
     });
 
-    return () => authListener.subscription.unsubscribe();
+    return () => {authListener?.subscription?.unsubscribe()};
   }, []);
 
 return <RootLayoutNav isLoggedIn={isLoggedIn} />;
@@ -71,7 +71,7 @@ function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
                 options={{ 
                   presentation: 'modal',
                   animation: 'fade',
-                  headerShown: true, 
+                  headerShown: false, 
                   headerTitle: 'All Bench PRs' }} 
                 />
                 <Stack.Screen 
@@ -79,7 +79,7 @@ function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
                 options={{ 
                   presentation: 'modal',
                   animation: 'fade',
-                  headerShown: true, 
+                  headerShown: false, 
                   headerTitle: 'All Deadlift PRs' }} 
                 />
                 <Stack.Screen 
@@ -87,7 +87,7 @@ function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
                 options={{ 
                   presentation: 'modal',
                   animation: 'fade',
-                  headerShown: true, 
+                  headerShown: false, 
                   headerTitle: 'All Squat PRs' }} 
                 />
             </>
@@ -99,7 +99,3 @@ function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
     
   );
 }
-function checkSession() {
-  throw new Error('Function not implemented.');
-}
-

@@ -7,6 +7,8 @@ export default function profileScreen(){
     const handleLogOut = async() => {
         const {error} = await supabase.auth.signOut(); 
     }
+    //TODO: reset password
+    
     return (
         <Container>
             <Button onPress={() => handleLogOut()}>
