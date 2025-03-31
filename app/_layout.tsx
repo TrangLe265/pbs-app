@@ -6,7 +6,7 @@ import { createTamagui,TamaguiProvider, Theme, View } from 'tamagui';
 import config from '@/tamagui.config';
 import { GestureHandlerRootView, TouchableOpacity } from 'react-native-gesture-handler';
 import supabase from '@/utility/supabaseClient';
-
+import ErrorBoundary from '@/ErrorBoundary';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -16,6 +16,7 @@ export default function RootLayout() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
   useEffect(() => {
+    console.log("starting authorization")
     const checkSession = async() =>{
       const {data} = await supabase.auth.getSession(); 
       //check if there is data, if data.session is not null, double exclaimatin mark turns the non-null object to a boolean value, which is what we want
@@ -41,14 +42,18 @@ export default function RootLayout() {
     return () => {authListener?.subscription?.unsubscribe()};
   }, []);
 
-return <RootLayoutNav isLoggedIn={isLoggedIn} />;
+return (
+  <ErrorBoundary>
+      <RootLayoutNav isLoggedIn={isLoggedIn} />
+  </ErrorBoundary>
+);
   
 }
 
 function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
- 
-  
+
   return (
+
     <TamaguiProvider config={config}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Theme name={"dark_blue"}>
@@ -60,6 +65,7 @@ function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
               options={{
                 presentation: 'modal',
                 title: 'Log in or sign up',}} 
+                
             />
             ) : (
               <>

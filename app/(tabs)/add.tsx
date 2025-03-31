@@ -6,16 +6,53 @@ import { Button, Input, TextArea, XStack, YStack, Form, Spinner, H4, ScrollView,
 import { Container, SubTitle, Title, LineSeperator } from "@/tamagui.config";
 
 export default function addScreen(){
+    const [category, setCategory] = useState(''); 
+    const [weight, setWeight] = useState('');
     const [date, setDate] = useState(new Date()); 
     const [showDatePicker, setShowDatePicker] = useState(false); 
 
-    const [status, setStatus] = React.useState<'' | 'submitting' | 'submitted'>(''); 
+    const [status, setStatus] = React.useState<'' | 'submitting' | 'submitted'| 'Missing fields'>(''); 
 
-    const onChange = (event: EventTarget, selectedDate: Date) => {
-        const currentDate = selectedDate ;
-        setShowDatePicker(false);
-        setDate(currentDate);
-        console.log(date)
+    const handleSubmit = async () => {
+        if (!category || !weight || !date ){
+            setStatus("Missing fields"); 
+            return;
+        }
+
+        try {
+            //hosting locally
+            const respone = await fetch("http://localhost:3000/lifts", {
+            method: "POST", 
+            headers: {
+                "Content-Type": "application.json",
+                Authorization: "Token", 
+            }, 
+            body: JSON.stringify({
+                category,
+                weight,
+                date: date.toISOString(),
+            })
+        }); 
+
+        if (!respone.ok) {
+            const errorData = await respone.json();
+            console.error("Error adding lift:", errorData.message);
+            alert(`Failed to add lift: ${errorData.message}`);
+        } else {
+            alert("Lift added successfully!");
+            setStatus("submitted");
+            // Reset form fields
+            setCategory("");
+            setWeight("");
+            setDate(new Date());
+        }
+    } catch (error) {
+        console.error("Unexpected error:", error);
+        alert("An unexpected error occurred. Please try again.");
+    } finally {
+        setStatus("");
+    }
+
     };
 
 
@@ -51,7 +88,7 @@ export default function addScreen(){
                 >
                     <SubTitle>Select lift type</SubTitle>
 
-                    <XStack gap="$2" justifyContent="center"> 
+                    <XStack gap="$2" justifyContent="center">  
                         <Button size="$3" theme="active">
                             Squat
                         </Button>
