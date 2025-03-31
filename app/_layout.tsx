@@ -38,26 +38,28 @@ export default function RootLayout() {
         router.replace('/login'); // Go back to login screen if logged out
       }
     });
-
+    
     return () => {authListener?.subscription?.unsubscribe()};
   }, []);
 
 return (
   
-    <RootLayoutNav isLoggedIn={isLoggedIn} />
+    <RootLayoutNav />
   
 );
   
 }
 
-function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
+function RootLayoutNav() {
 
   return (
 
     <TamaguiProvider config={config}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Theme name={"dark_blue"}>
+  
           <Stack>
+            
             <Stack.Screen 
                 name="login"
                 options={{
@@ -73,7 +75,7 @@ function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
                 options={{ 
                   presentation: 'modal',
                   animation: 'fade',
-                  headerShown: false, 
+                  headerShown: true, 
                   headerTitle: 'All Bench PRs' }} 
                 />
                 <Stack.Screen 
@@ -81,7 +83,7 @@ function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
                 options={{ 
                   presentation: 'modal',
                   animation: 'fade',
-                  headerShown: false, 
+                  headerShown: true, 
                   headerTitle: 'All Deadlift PRs' }} 
                 />
                 <Stack.Screen 
@@ -89,7 +91,7 @@ function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
                 options={{ 
                   presentation: 'modal',
                   animation: 'fade',
-                  headerShown: false, 
+                  headerShown: true, 
                   headerTitle: 'All Squat PRs' }} 
                 />
     

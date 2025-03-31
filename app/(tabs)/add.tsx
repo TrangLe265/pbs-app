@@ -16,6 +16,8 @@ import {
 } from "tamagui";
 import { Container, SubTitle, Title, LineSeperator } from "@/tamagui.config";
 import supabase from "@/utility/supabaseClient";
+import token from "@/utility/token";
+import userId from "@/utility/userId";
 
 export default function AddScreen() {
     const [category, setCategory] = useState(0);
@@ -33,17 +35,15 @@ export default function AddScreen() {
     };
 
     const handleSubmit = async () => {
-        const { data, error } = await supabase.auth.getSession();
-        const token = data.session?.access_token;
+       
+        const user_id = await userId();
+        const accessToken = await token(); // Fetch the token asynchronously
 
-        const { data: userData, error: userError } = await supabase.auth.getUser();
-        const user_id = userData.user?.id;
         const API_URL_ADD = process.env.EXPO_PUBLIC_API_URL_ADD || "https://your-default-api-url.com/add";
-        console.log(API_URL_ADD);
 
         if (!category || !weight || !date) {
             setMessage("Missing fields");
-            alert("Missing fields")
+            alert("Missing fields");
             return;
         }
 
@@ -60,11 +60,13 @@ export default function AddScreen() {
         try {
             console.log("Attempt to add new data");
 
+            
+
             const response = await fetch(API_URL_ADD, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${accessToken}`, // Use the fetched token
                 },
                 body: JSON.stringify(requestBody),
             });
@@ -74,13 +76,11 @@ export default function AddScreen() {
                 console.error("Error adding lift:", errorData.message);
                 alert(`Failed to add lift: ${errorData.message}`);
             } else {
-
                 alert("Lift added successfully!");
                 setMessage("Submitted!");
                 setCategory(0);
                 setWeight(0);
                 setDate(new Date());
-                
             }
         } catch (error) {
             console.error("Unexpected error:", error);
@@ -168,3 +168,4 @@ export default function AddScreen() {
         </Container>
     );
 }
+// Import the handleSubmit function from the service file

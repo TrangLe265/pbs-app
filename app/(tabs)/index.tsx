@@ -23,9 +23,11 @@ export default function IndexScreen() {
                         <H4>{category.toUpperCase()}</H4>
                         <Paragraph theme="alt2">Current PR</Paragraph>
                     </Card.Header>
+                    <Circle size="$4" animation={"quick"} theme={"light_yellow"}/>
 
                     <Card.Footer padded>
                         <XStack flex={1} />
+                        
                         <Button
                             animation="bouncy"
                             elevation="$4"
@@ -40,6 +42,7 @@ export default function IndexScreen() {
                         >
                             View all
                         </Button>
+                        
                     </Card.Footer>
                 </Card>
             ))}
