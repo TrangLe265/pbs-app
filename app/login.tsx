@@ -18,14 +18,16 @@ export default function LoginScreen() {
             return;
         }
 
+        {/*(await supabase.auth.getSession()).data.session?.access_token*/}
+
         try {
             const { data, error } = await supabase.auth.signUp({ email, password });
             if (error) {
                 setMessage(`Sign-up failed: ${error.message}`);
             } else if (data.session) {
                 // Store the token in AsyncStorage
-                const token = data.session.access_token;
-                await AsyncStorage.setItem("authToken", token);
+                //const token = data.session.access_token;
+                //await AsyncStorage.setItem("authToken", token);
 
                 setMessage("Sign-up successful! Redirecting...");
                 
@@ -60,8 +62,8 @@ export default function LoginScreen() {
                 setMessage(`Sign-in failed: ${error.message}`);
             } else if (data.session) {
                 // Store the token in AsyncStorage
-                const token = data.session.access_token;
-                await AsyncStorage.setItem("authToken", token);
+                //const token = data.session.access_token;
+                //await AsyncStorage.setItem("authToken", token);
 
                 setMessage("Sign-in successful! Redirecting...");
                 // Add navigation logic here if needed, e.g., router.push('/home');

@@ -1,111 +1,146 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native"; 
+import { Text, View, StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { Button, Input, TextArea, XStack, YStack, Form, Spinner, H4, ScrollView, Paragraph} from 'tamagui'; 
+import {
+    Button,
+    Input,
+    TextArea,
+    XStack,
+    YStack,
+    Form,
+    Spinner,
+    H4,
+    ScrollView,
+    Paragraph,
+} from "tamagui";
 import { Container, SubTitle, Title, LineSeperator } from "@/tamagui.config";
+import supabase from "@/utility/supabaseClient";
 
-export default function addScreen(){
-    const [category, setCategory] = useState(''); 
-    const [weight, setWeight] = useState('');
-    const [date, setDate] = useState(new Date()); 
-    const [showDatePicker, setShowDatePicker] = useState(false); 
+export default function AddScreen() {
+    const [category, setCategory] = useState(0);
+    const [weight, setWeight] = useState(0);
+    const [date, setDate] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [status, setStatus] = useState<"" | "submitting" | "submitted" | "Missing fields">("");
 
-    const [status, setStatus] = React.useState<'' | 'submitting' | 'submitted'| 'Missing fields'>(''); 
+    const categoryMap: { [key: string]: number } = {
+        Squat: 1,
+        Bench: 2,
+        Deadlift: 3,
+    };
 
     const handleSubmit = async () => {
-        if (!category || !weight || !date ){
-            setStatus("Missing fields"); 
+        const { data, error } = await supabase.auth.getSession();
+        const token = data.session?.access_token;
+
+        const { data: userData, error: userError } = await supabase.auth.getUser();
+        const user_id = userData.user?.id;
+        const API_URL_ADD = process.env.EXPO_PUBLIC_API_URL_ADD || "https://your-default-api-url.com/add";
+
+        if (!category || !weight || !date) {
+            setStatus("Missing fields");
             return;
         }
 
+        const formattedWeight = Number(parseFloat(weight.toString()).toFixed(2));
+        const requestBody = {
+            user_id,
+            lift_category_id: category,
+            date: date.toISOString().split("T")[0],
+            weight_lifted: formattedWeight,
+        };
+
+        console.log(requestBody);
+
         try {
-            //hosting locally
-            const respone = await fetch("http://localhost:3000/lifts", {
-            method: "POST", 
-            headers: {
-                "Content-Type": "application.json",
-                Authorization: "Token", 
-            }, 
-            body: JSON.stringify({
-                category,
-                weight,
-                date: date.toISOString(),
-            })
-        }); 
+            console.log("Attempt to add new data");
 
-        if (!respone.ok) {
-            const errorData = await respone.json();
-            console.error("Error adding lift:", errorData.message);
-            alert(`Failed to add lift: ${errorData.message}`);
-        } else {
-            alert("Lift added successfully!");
-            setStatus("submitted");
-            // Reset form fields
-            setCategory("");
-            setWeight("");
-            setDate(new Date());
+            const response = await fetch(API_URL_ADD, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error adding lift:", errorData.message);
+                alert(`Failed to add lift: ${errorData.message}`);
+            } else {
+                alert("Lift added successfully!");
+                setStatus("submitted");
+                setCategory(0);
+                setWeight(0);
+                setDate(new Date());
+            }
+        } catch (error) {
+            console.error("Unexpected error:", error);
+            alert("An unexpected error occurred. Please try again.");
+        } finally {
+            setStatus("");
         }
-    } catch (error) {
-        console.error("Unexpected error:", error);
-        alert("An unexpected error occurred. Please try again.");
-    } finally {
-        setStatus("");
-    }
-
     };
-
-
-    React.useEffect(() => {
-        if (status === 'submitting'){
-            const timer = setTimeout(() => setStatus(''),2000)
-            return () => clearTimeout(timer); 
-        }
-    },[status])
 
     return (
         <Container>
-        
-            <ScrollView maxHeight={600}
-                    width="95%"
-                    padding="$4"
-                    borderRadius="$4">
-
+            <ScrollView maxHeight={600} width="95%" padding="$4" borderRadius="$4">
                 <YStack>
-                <Title>Add a new record</Title>
-               
-                
-                <Form
-                    alignItems="center"
-                    minWidth={300}
-                    gap="$2"
-                    onSubmit={() => setStatus('submitting')} //tamagui Form controlling
-                    borderWidth={1}
-                    borderRadius="$4"
-                    backgroundColor="$background"
-                    borderColor="$borderColor"
-                    padding="$8"
-                >
-                    <SubTitle>Select lift type</SubTitle>
+                    <Title>Add a new record</Title>
 
-                    <XStack gap="$2" justifyContent="center">  
-                        <Button size="$3" theme="active">
-                            Squat
-                        </Button>
-                        <Button size="$3" theme="active">
-                            Bench
-                        </Button>
-                        <Button size="$3" theme="active">
-                            Deadlift
-                        </Button>
-                    </XStack>
-                    <LineSeperator/>
-    
+                    <Form
+                        alignItems="center"
+                        minWidth={300}
+                        gap="$2"
+                        onSubmit={() => handleSubmit()}
+                        borderWidth={1}
+                        borderRadius="$4"
+                        backgroundColor="$background"
+                        borderColor="$borderColor"
+                        padding="$8"
+                    >
+                        <SubTitle>Select lift type</SubTitle>
+                        <XStack gap="$2" justifyContent="center">
+                            <Button
+                                onPress={() => setCategory(categoryMap["Squat"])}
+                                size="$3"
+                                theme={category === categoryMap["Squat"] ? "blue" : "active"}
+                            >
+                                Squat
+                            </Button>
+                            <Button
+                                onPress={() => setCategory(categoryMap["Bench"])}
+                                size="$3"
+                                theme={category === categoryMap["Bench"] ? "blue" : "active"}
+                            >
+                                Bench
+                            </Button>
+                            <Button
+                                onPress={() => setCategory(categoryMap["Deadlift"])}
+                                size="$3"
+                                theme={category === categoryMap["Deadlift"] ? "blue" : "active"}
+                            >
+                                Deadlift
+                            </Button>
+                        </XStack>
+                        <LineSeperator />
 
-                    <SubTitle>Enter weight</SubTitle>
-                    <Input width={200} flex={1} size={50} placeholder={`(kg)`} autoFocus={true} />
-                    <LineSeperator/>
-                    <SubTitle>Select date</SubTitle>
+                        <SubTitle>Enter weight</SubTitle>
+                        <Input
+                            value={weight}
+                            onChangeText={(text) => setWeight(parseInt(text) || 0)}
+                            width={200}
+                            flex={1}
+                            size={50}
+                            placeholder={`(kg)`}
+                            autoFocus={true}
+                            keyboardType="numeric"
+                        />
+                        <LineSeperator />
+
+                        <SubTitle>Select date</SubTitle>
                         <DateTimePicker
                             value={date}
                             mode="date"
@@ -116,19 +151,16 @@ export default function addScreen(){
                                 }
                             }}
                         />
+                        <LineSeperator />
 
-                   <LineSeperator/>
-                    <Form.Trigger asChild disabled={status !== ''}>
-                        <Button icon={status === 'submitting' ? () => <Spinner /> : undefined} theme={"active"}>
-                        Submit
-                        </Button>
-                    </Form.Trigger>
-                </Form>
-                    
+                        <Form.Trigger asChild disabled={status === "submitting"}>
+                            <Button icon={status === "submitting" ? <Spinner /> : undefined} theme={"active"}>
+                                Submit
+                            </Button>
+                        </Form.Trigger>
+                    </Form>
                 </YStack>
-
-            </ScrollView> 
-            
+            </ScrollView>
         </Container>
-    )
+    );
 }

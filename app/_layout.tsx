@@ -43,9 +43,9 @@ export default function RootLayout() {
   }, []);
 
 return (
-  <ErrorBoundary>
+  
       <RootLayoutNav isLoggedIn={isLoggedIn} />
-  </ErrorBoundary>
+  
 );
   
 }
@@ -58,17 +58,13 @@ function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Theme name={"dark_blue"}>
           <Stack>
-            {/*if user is not yet loggin in, show login screen*/}
-            {!isLoggedIn ? (
-              <Stack.Screen 
-              name="login"
-              options={{
-                presentation: 'modal',
-                title: 'Log in or sign up',}} 
-                
-            />
-            ) : (
-              <>
+            <Stack.Screen 
+                name="login"
+                options={{
+                  presentation: 'modal',
+                  title: 'Log in or sign up',}}  
+              />
+            
               {/*show main tabs screen*/}
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               {/*show modals screen*/}
@@ -96,8 +92,7 @@ function RootLayoutNav({isLoggedIn}: {isLoggedIn: boolean}) {
                   headerShown: false, 
                   headerTitle: 'All Squat PRs' }} 
                 />
-            </>
-            )}
+    
           </Stack>
         </Theme>
         </GestureHandlerRootView>
