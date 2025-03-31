@@ -9,7 +9,7 @@ import supabase from '@/utility/supabaseClient';
 import ErrorBoundary from '@/ErrorBoundary';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+//SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const router = useRouter(); 
@@ -44,7 +44,7 @@ export default function RootLayout() {
 
 return (
   
-      <RootLayoutNav isLoggedIn={isLoggedIn} />
+    <RootLayoutNav isLoggedIn={isLoggedIn} />
   
 );
   
