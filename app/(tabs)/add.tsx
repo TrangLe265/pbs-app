@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Alert } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import {
@@ -22,7 +22,9 @@ export default function AddScreen() {
     const [weight, setWeight] = useState(0);
     const [date, setDate] = useState(new Date());
     const [showDatePicker, setShowDatePicker] = useState(false);
-    const [status, setStatus] = useState<"" | "submitting" | "submitted" | "Missing fields">("");
+    const [message,setMessage]=useState("All fields are required!")
+    const [formKey, setFormKey] = useState(0);
+    
 
     const categoryMap: { [key: string]: number } = {
         Squat: 1,
@@ -37,9 +39,11 @@ export default function AddScreen() {
         const { data: userData, error: userError } = await supabase.auth.getUser();
         const user_id = userData.user?.id;
         const API_URL_ADD = process.env.EXPO_PUBLIC_API_URL_ADD || "https://your-default-api-url.com/add";
+        console.log(API_URL_ADD);
 
         if (!category || !weight || !date) {
-            setStatus("Missing fields");
+            setMessage("Missing fields");
+            alert("Missing fields")
             return;
         }
 
@@ -70,23 +74,25 @@ export default function AddScreen() {
                 console.error("Error adding lift:", errorData.message);
                 alert(`Failed to add lift: ${errorData.message}`);
             } else {
+
                 alert("Lift added successfully!");
-                setStatus("submitted");
+                setMessage("Submitted!");
                 setCategory(0);
                 setWeight(0);
                 setDate(new Date());
+                
             }
         } catch (error) {
             console.error("Unexpected error:", error);
             alert("An unexpected error occurred. Please try again.");
         } finally {
-            setStatus("");
+            setMessage("");
         }
     };
 
     return (
         <Container>
-            <ScrollView maxHeight={600} width="95%" padding="$4" borderRadius="$4">
+            <ScrollView key={formKey} keyboardDismissMode={"on-drag"} maxHeight={600} width="95%" padding="$4" borderRadius="$4">
                 <YStack>
                     <Title>Add a new record</Title>
 
@@ -94,7 +100,6 @@ export default function AddScreen() {
                         alignItems="center"
                         minWidth={300}
                         gap="$2"
-                        onSubmit={() => handleSubmit()}
                         borderWidth={1}
                         borderRadius="$4"
                         backgroundColor="$background"
@@ -135,7 +140,6 @@ export default function AddScreen() {
                             flex={1}
                             size={50}
                             placeholder={`(kg)`}
-                            autoFocus={true}
                             keyboardType="numeric"
                         />
                         <LineSeperator />
@@ -153,12 +157,12 @@ export default function AddScreen() {
                         />
                         <LineSeperator />
 
-                        <Form.Trigger asChild disabled={status === "submitting"}>
-                            <Button icon={status === "submitting" ? <Spinner /> : undefined} theme={"active"}>
-                                Submit
-                            </Button>
-                        </Form.Trigger>
+                        <Button onPress={()=>handleSubmit()} theme={"active"}>
+                            Submit
+                        </Button>
+                        
                     </Form>
+                    
                 </YStack>
             </ScrollView>
         </Container>

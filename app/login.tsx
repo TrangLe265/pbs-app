@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Button, Input, Paragraph } from "tamagui";
 import { Container, LineSeperator, SubTitle, Title } from "@/tamagui.config";
-import { Alert } from "react-native";
 import supabase from "@/utility/supabaseClient";
-import AsyncStorage from "@react-native-async-storage/async-storage"; // Import AsyncStorage
 
 export default function LoginScreen() {
     const [email, setEmail] = useState(""); 
@@ -76,7 +74,6 @@ export default function LoginScreen() {
                 placeholder="Enter your email"
                 value={email}
                 onChangeText={setEmail}
-                autoFocus={true}
                 flexGrow={1}
                 height={50}
                 size="$4"
