@@ -1,50 +1,44 @@
-# Welcome to your Expo app 👋
+# Mobile App - React Native & Supabase
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## 📌 Tech Stack
+- **React Native** - Mobile framework
+- **Expo Router** - Routing for React Native
+- **Tamagui** - UI library for styling
+- **Backend** ([like this repo]https://github.com/TrangLe265/liftings-pbs-api) - You can choose to run it locally or deploy it
+- **Supabase** - Authentication & database provider
 
-## Get started
+## 🚀 Setup & Running Locally
 
-1. Install dependencies
+### 1️⃣ Prerequisites
+- Install **Node.js** ([Download here](https://nodejs.org/))
+- Install **Expo CLI** globally:
+  ```sh
+  npm install -g expo-cli
+  ```
+- Register on **Supabase** ([Sign up here](https://supabase.com/))
 
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+### 2️⃣ Configure Environment Variables
+Create a `.env` file in the root directory and add:
+```env
+EXPO_PUBLIC_SUPABASE_URL=your-supabase-url
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+EXPO_PUBLIC_API_URL=your-backend-api-url 
 ```
+*(Find these values in your Supabase dashboard under Project Settings > API.)*
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 3️⃣ Start the Mobile App
+Run the following commands in your terminal:
+```sh
+npm install  # Install dependencies
+npm start    # Start Expo development server
+```
+Use the **Expo Go** app (iOS/Android) or an emulator to preview the app.
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+## 🔐 Authorization Flow: Backend with Authentication Middleware
+1. User sends a login request via the UI with email and password.
+2. Supabase validates credentials and returns an access token.
+3. The token is included in the `Authorization` header for future requests.
+4. Middleware in the backend verifies the token before allowing access.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+#### Please note that it is possible to configure this app to run entirely on Supabase without the need for a backend. 
