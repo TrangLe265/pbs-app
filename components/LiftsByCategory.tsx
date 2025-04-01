@@ -119,7 +119,6 @@ export default function LiftList({liftCategoryId}: LiftListProps){
         }
     };
 
-
     if (loading) return <Spinner />
 
     return(

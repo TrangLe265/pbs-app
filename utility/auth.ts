@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import supabase from './supabaseClient';
 
+// Authentication logic 
 export function useAuth(){
     const [message, setMessage] = useState(''); 
 
