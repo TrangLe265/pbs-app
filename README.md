@@ -1,4 +1,7 @@
 # Mobile App - React Native & Supabase
+##📱 App Description
+
+This mobile application helps users track their weightlifting progress by logging different lift categories such as Squat, Bench, and Deadlift. Users can store their lift records in a database, view their progress over time, and authenticate securely using Supabase authentication.
 
 ## 📌 Tech Stack
 - **React Native** - Mobile framework
