@@ -1,9 +1,14 @@
-import { Text } from "react-native"
+import LiftsByCategory from "@/components/LiftsByCategory";
+import { Title, Container,LineSeperator } from "@/tamagui.config";
 
-export default function deadliftScreen(){
+
+export default function DeadliftScreen(){
+    
     return (
-        <>
-            <Text>Deadlift</Text>
-        </>
+        <Container>
+            <Title>All Deadlifts PRs</Title>
+            <LineSeperator/>
+            <LiftsByCategory liftCategoryId={3}/>
+        </Container>
     )
 }

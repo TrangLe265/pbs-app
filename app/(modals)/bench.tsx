@@ -1,9 +1,14 @@
-import { Text } from "react-native"
+import LiftsByCategory from "@/components/LiftsByCategory";
+import { Title, Container,LineSeperator } from "@/tamagui.config";
 
-export default function benchScreen(){
+
+export default function BenchScreen(){
+    
     return (
-        <>
-            <Text>Bench</Text>
-        </>
+        <Container>
+            <Title>All Bench PRs</Title>
+            <LineSeperator/>
+            <LiftsByCategory liftCategoryId={1}/>
+        </Container>
     )
 }

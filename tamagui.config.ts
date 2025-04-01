@@ -1,12 +1,11 @@
 import { createAnimations } from '@tamagui/animations-react-native';
 import { createInterFont } from '@tamagui/font-inter';
-import { createMedia } from '@tamagui/react-native-media-driver';
-import { shorthands } from '@tamagui/shorthands';
 import { themes, tokens } from '@tamagui/themes';
-import { createTamagui, styled, Text, YStack } from 'tamagui';
+import { createTamagui, styled, Text, YStack} from 'tamagui';
+
 
 const animations = createAnimations({
-  bouncy: {
+  bouncy: { 
     type: 'spring',
     damping: 10,
     mass: 0.9,
@@ -26,7 +25,6 @@ const animations = createAnimations({
 });
 
 const headingFont = createInterFont();
-
 const bodyFont = createInterFont();
 
 export const Container = styled(YStack, {
@@ -42,7 +40,7 @@ export const Main = styled(YStack, {
 
 export const Title = styled(Text, {
   fontSize: 30,
-  fontWeight: 'semi-bold',
+  fontWeight: '600',
   color: '$blue4Dark', 
   marginBottom: 10,
   alignItems:'center',
@@ -50,7 +48,7 @@ export const Title = styled(Text, {
 
 export const SubTitle = styled(Text, {
     fontSize: 18,
-    fontWeight: 'semi-bold',
+    fontWeight: '400',
     color: '$blue0Light', 
     marginBottom: 10,
   });
@@ -71,7 +69,6 @@ const config = createTamagui({
   animations,
   shouldAddPrefersColorThemes: true,
   themeClassNameOnRoot: true,
-  shorthands,
   fonts: {
     body: bodyFont,
     heading: headingFont,
@@ -90,3 +87,4 @@ declare module 'tamagui' {
 }
 
 export default config;
+

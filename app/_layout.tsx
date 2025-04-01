@@ -8,8 +8,6 @@ import { GestureHandlerRootView, TouchableOpacity } from 'react-native-gesture-h
 import supabase from '@/utility/supabaseClient';
 import ErrorBoundary from '@/ErrorBoundary';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-//SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const router = useRouter(); 
@@ -59,7 +57,6 @@ function RootLayoutNav() {
         <Theme name={"dark_blue"}>
   
           <Stack>
-            
             <Stack.Screen 
                 name="login"
                 options={{
@@ -75,24 +72,21 @@ function RootLayoutNav() {
                 options={{ 
                   presentation: 'modal',
                   animation: 'fade',
-                  headerShown: true, 
-                  headerTitle: 'All Bench PRs' }} 
+                  headerShown: false }} 
                 />
                 <Stack.Screen 
                 name="(modals)/deadlift" 
                 options={{ 
                   presentation: 'modal',
                   animation: 'fade',
-                  headerShown: true, 
-                  headerTitle: 'All Deadlift PRs' }} 
+                  headerShown: false }} 
                 />
                 <Stack.Screen 
                 name="(modals)/squat" 
                 options={{ 
                   presentation: 'modal',
                   animation: 'fade',
-                  headerShown: true, 
-                  headerTitle: 'All Squat PRs' }} 
+                  headerShown:false }} 
                 />
     
           </Stack>

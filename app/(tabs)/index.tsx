@@ -13,17 +13,16 @@ export default function IndexScreen() {
         <Container>
             <Title>Find all your PRs here </Title>
             <LineSeperator/>
-            <ScrollView maxHeight={600}
+            <ScrollView maxHeight={650}
                                 width="95%"
                                 padding="$4"
                                 borderRadius="$4">
             {categories.map((category) => (
-                <Card size="$5" width={300} style={{ marginBottom: 20 }} key={category}>
+                <Card size="$4" width={300} style={{ marginBottom: 20 }} key={category}>
                     <Card.Header padded>
                         <H4>{category.toUpperCase()}</H4>
                         <Paragraph theme="alt2">Current PR</Paragraph>
                     </Card.Header>
-                    <Circle size="$4" animation={"quick"} theme={"light_yellow"}/>
 
                     <Card.Footer padded>
                         <XStack flex={1} />
@@ -32,10 +31,10 @@ export default function IndexScreen() {
                             animation="bouncy"
                             elevation="$4"
                             hoverStyle={{
-                                scale: 2.0,
+                                scale: 1.5,
                             }}
                             pressStyle={{
-                                scale: 2.0,
+                                scale: 1.5,
                             }}
                             onPress={() => router.push(`/(modals)/${category}`)}
                             borderRadius="$10"
