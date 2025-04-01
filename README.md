@@ -4,7 +4,7 @@
 - **React Native** - Mobile framework
 - **Expo Router** - Routing for React Native
 - **Tamagui** - UI library for styling
-- **Backend** ([like this repo]https://github.com/TrangLe265/liftings-pbs-api) - You can choose to run it locally or deploy it
+- **Backend** ([like this repo](https://github.com/TrangLe265/liftings-pbs-api)) - You can choose to run it locally or deploy it
 - **Supabase** - Authentication & database provider
 
 ## 🚀 Setup & Running Locally
