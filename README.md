@@ -10,6 +10,10 @@ This mobile application helps users track their weightlifting progress by loggin
 - **Backend** ([like this repo](https://github.com/TrangLe265/liftings-pbs-api)) - You can choose to run it locally or deploy it
 - **Supabase** - Authentication & database provider
 
+## Video demonstration:
+
+<iframe width="560" height="315" src="[https://www.youtube.com/embed/https://youtu.be/M1889JHJ1l4]" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## 🚀 Setup & Running Locally
 
 ### 1️⃣ Prerequisites
