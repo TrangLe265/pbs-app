@@ -2,67 +2,39 @@ import React, { useState } from "react";
 import { Button, Input, Paragraph } from "tamagui";
 import { Container, LineSeperator, SubTitle, Title } from "@/tamagui.config";
 import supabase from "@/utility/supabaseClient";
+import { useAuth } from "@/utility/auth";
+
+//this file is for login/signup UI
+const AuthInput: React.FC<{ 
+    placeholder: string; 
+    value: string; 
+    onChangeText: (text: string) => void; 
+    secureTextEntry?: boolean; 
+}> = ({placeholder, value, onChangeText, secureTextEntry = false}) => {
+    return (
+        <Input 
+            placeholder={placeholder}
+            value={value}
+            onChangeText={onChangeText}
+            flexGrow={1}
+            height={50}
+            size="$4"
+            borderWidth={2}
+            width={200}
+            marginBottom={15}
+            secureTextEntry={secureTextEntry}
+        />
+    );
+}
 
 export default function LoginScreen() {
-    const [email, setEmail] = useState(""); 
-    const [password, setPassword] = useState(""); 
-    const [name, setName] = useState(""); 
-    const [message, setMessage] = useState(""); 
+    const {handleSignIn, handleSignUp, message } = useAuth(); 
+    const [form, setForm] = useState({email: "", password: "", name: ""}); 
 
-    // Handle user sign-up
-    const handleSignUp = async (email: string, password: string, name: string) => {
-        if (!email.trim() || !password.trim() || !name.trim()) {
-            setMessage("Please enter a valid email, password, and name.");
-            return;
-        }
+    const handleChange =(key: keyof typeof form, value: string) => {
+        setForm(prev => ({...prev, [key]: value}))
+    }
 
-
-        try {
-            const { data, error } = await supabase.auth.signUp({ email, password });
-            if (error) {
-                setMessage(`Sign-up failed: ${error.message}`);
-            } else if (data.session) {
-            
-                setMessage("Sign-up successful! Redirecting...");
-                
-                // Add the user's name to the "users" table
-                if (data.user) {
-                    const { error: userError } = await supabase.from("users").insert([
-                        { id: data.user.id, name },
-                    ]);
-
-                    if (userError) {
-                        console.error("Error inserting user: ", userError.message);
-                    }
-                }
-
-                // Add navigation logic here if needed, e.g., router.push('/home');
-            }
-        } catch (error: any) {
-            setMessage(error?.message || "An unexpected error occurred during sign-up.");
-        }
-    };
-
-    // Handle user sign-in
-    const handleSignIn = async (email: string, password: string) => {
-        if (!email.trim() || !password.trim()) {
-            setMessage("Please enter a valid email and password.");
-            return;
-        }
-
-        try {
-            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-            if (error) {
-                setMessage(`Sign-in failed: ${error.message}`);
-            } else if (data.session) {
-    
-                setMessage("Sign-in successful! Redirecting...");
-                // Add navigation logic here if needed, e.g., router.push('/home');
-            }
-        } catch (error: any) {
-            setMessage(error?.message || "An unexpected error occurred during sign-in.");
-        }
-    };
  
     return (
         <Container>
@@ -70,47 +42,31 @@ export default function LoginScreen() {
             <LineSeperator />
             <SubTitle color={"$blue3Dark"}>To start using the app, log in</SubTitle>
 
-            <Input
+            <AuthInput
                 placeholder="Enter your email"
-                value={email}
-                onChangeText={setEmail}
-                flexGrow={1}
-                height={50}
-                size="$4"
-                borderWidth={2}
-                width={200}
-                marginBottom={15}
+                value={form.email}
+                onChangeText={(value) => handleChange("email",value)}
             />
             
-            <Input
+            <AuthInput
                 placeholder="Enter your password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={true} 
-                flexGrow={1}
-                height={50}
-                size="$4"
-                borderWidth={2}
-                width={200}
+                value={form.password}
+                onChangeText={(value) => handleChange("password", value)}
+                secureTextEntry={true}
             />
 
-            <Button onPress={() => handleSignIn(email, password)} marginTop={10}>
+            <Button onPress={() => handleSignIn(form.email, form.password)} marginTop={10}>
                 <Paragraph>Sign In</Paragraph>
             </Button>
             <LineSeperator />
             <SubTitle color={"$blue3Dark"}>Don't have an account? Sign up</SubTitle>
-            <Input
+            <AuthInput
                 placeholder="Just any nickname"
-                value={name}
-                onChangeText={setName}
-                flexGrow={1}
-                height={50}
-                size="$4"
-                borderWidth={2}
-                width={200}
+                value={form.name}
+                onChangeText={(value) => handleChange("name",value)}
             />
 
-            <Button onPress={() => handleSignUp(email, password, name)} marginTop={10}>
+            <Button onPress={() => handleSignUp(form.email, form.password, form.name)} marginTop={10}>
                 <Paragraph>Sign Up</Paragraph>
             </Button>
 

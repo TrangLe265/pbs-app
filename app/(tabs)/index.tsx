@@ -4,6 +4,7 @@ import { H4, XStack, Button, Paragraph, H3, Separator, ScrollView, Circle } from
 import { Card } from "tamagui";
 import { Container, LineSeperator, SubTitle, Title } from "@/tamagui.config";
 
+//This file hosts all the Modals(suat, bench, deadlift)
 export default function IndexScreen() {
     const router = useRouter();
     const categories = ["squat", "bench", "deadlift"];

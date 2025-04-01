@@ -9,7 +9,9 @@ import {
     ScrollView,
     YGroup,
     ListItem,
-    Paragraph, 
+    Paragraph,
+    Switch, 
+    
 } from "tamagui";
 import { Container, SubTitle, Title } from '@/tamagui.config';
 import token from "@/utility/token";
@@ -23,13 +25,13 @@ interface LiftListProps {
 export default function LiftList({liftCategoryId}: LiftListProps){
     interface Lift {
         id: number;
-        weight_lifted: string;
+        weight_lifted: number;
         date: string;
     }
 
     const [lifts, setLifts] = useState<Lift[]>([]); 
     const [loading, setLoading] = useState(true); 
-
+    const [isSorted, setIsSorted] = useState(false);
 
     useEffect(()=> {
         const fetchLifts = async() => {
@@ -66,33 +68,33 @@ export default function LiftList({liftCategoryId}: LiftListProps){
         fetchLifts(); 
     }, [liftCategoryId])
 
-    const handleDelete = async(liftId: number) => {
-        const accessToken = await token(); 
-        const API = `http://localhost:3000/lifts/${liftId}`; 
+    const handleDelete = async (liftId: number) => {
+        console.log(`Deleting lift with ID: ${liftId}`); // Debugging log
+        const accessToken = await token();
+        const API = `http://localhost:3000/lifts/${liftId}`;
 
         try {
-            const response = await fetch(API,{
-                method: 'DELETE', 
+            const response = await fetch(API, {
+                method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${accessToken}`,
-                }
-            })
+                },
+            });
 
-            if (!response.ok){
-                const error = await response.json(); 
-                console.log("fail to delete")
-            }else {
+            if (!response.ok) {
+                const error = await response.json();
+                console.error("Failed to delete lift:", error.message);
+                alert(`Failed to delete lift: ${error.message}`);
+            } else {
                 console.log("Lift deleted successfully!");
-                setLifts((prevLifts) => prevLifts.filter((lift) => lift.id !== liftId)) //filtering out the deleted lift
-                
+                setLifts((prevLifts) => prevLifts.filter((lift) => lift.id !== liftId));
             }
-
-        }catch(error){
+        } catch (error) {
             console.error("Unexpected error:", error);
             alert("An unexpected error occurred. Please try again.");
         }
-    }
+    };
 
     const confirmDelete = (liftId: number) => {
         Alert.alert(
@@ -105,6 +107,19 @@ export default function LiftList({liftCategoryId}: LiftListProps){
         );
     };
 
+    const sortLifts = (lifts: Lift[]): Lift[] => {
+        return lifts.sort((a, b) => b.weight_lifted - a.weight_lifted);
+    };
+
+    const handleSwitchChange = () => {
+        setIsSorted((prev) => !prev);
+        if (!isSorted) {
+            setLifts((prevLifts) => sortLifts([...prevLifts]));
+            console.log(lifts)
+        }
+    };
+
+
     if (loading) return <Spinner />
 
     return(
@@ -112,13 +127,19 @@ export default function LiftList({liftCategoryId}: LiftListProps){
             width="95%"
             padding="$4"
             borderRadius="$4">
+                {/*{lifts.length !== 0 ? (
+                    <Switch onCheckedChange={() => handleSwitchChange()} size="$2">
+                        <Switch.Thumb animation="bouncy" />
+                    </Switch>
+                ) : null }*/}
+                
                 {lifts.length === 0 ? (
                     <Container>
                         <Title>No records have been added</Title>
                     </Container>
                     
                 ) : (
-                    
+                
                     lifts.map((lift) => (
                             <ListItem key={lift.id} subTitle={lift.date} marginBottom={3} borderRadius={10}>
                                 <XStack flex={1} justifyContent="space-between" alignItems="center">
@@ -132,7 +153,7 @@ export default function LiftList({liftCategoryId}: LiftListProps){
                     
                 )}
             
-            
+        
         </ScrollView>
     )
 }
