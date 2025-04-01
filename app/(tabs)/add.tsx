@@ -29,8 +29,8 @@ export default function AddScreen() {
     
 
     const categoryMap: { [key: string]: number } = {
-        Squat: 1,
-        Bench: 2,
+        Bench: 1,
+        Squat: 2,
         Deadlift: 3,
     };
 

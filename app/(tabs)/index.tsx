@@ -28,6 +28,7 @@ export default function IndexScreen() {
                         <XStack flex={1} />
                         
                         <Button
+                            backgroundColor={'$blue10'}
                             animation="bouncy"
                             elevation="$4"
                             hoverStyle={{
@@ -39,7 +40,7 @@ export default function IndexScreen() {
                             onPress={() => router.push(`/(modals)/${category}`)}
                             borderRadius="$10"
                         >
-                            View all
+                            View all   
                         </Button>
                         
                     </Card.Footer>

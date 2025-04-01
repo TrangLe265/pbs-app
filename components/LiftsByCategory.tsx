@@ -8,7 +8,8 @@ import {
     H4,
     ScrollView,
     YGroup,
-    ListItem, 
+    ListItem,
+    Paragraph, 
 } from "tamagui";
 import { Container, SubTitle, Title } from '@/tamagui.config';
 import token from "@/utility/token";
@@ -30,11 +31,12 @@ export default function LiftList({liftCategoryId}: LiftListProps){
     const [lifts, setLifts] = useState<Lift[]>([]); 
     const [loading, setLoading] = useState(true); 
 
+
     useEffect(()=> {
         const fetchLifts = async() => {
-            const user_id = await userId();
+        
             const accessToken = await token(); 
-            const API = `http://localhost:3000/lifts/${liftCategoryId}`
+            const API = `http://localhost:3000/lifts/${liftCategoryId}`; 
     
             try{
                 console.log("Attempt to show all data by category")
@@ -61,9 +63,37 @@ export default function LiftList({liftCategoryId}: LiftListProps){
             }
     
         }
-
+     
         fetchLifts(); 
     }, [liftCategoryId])
+
+    const handleDelete = async(liftId: number) => {
+        const accessToken = await token(); 
+        const API = `http://localhost:3000/lifts/${liftId}`; 
+
+        try {
+            const response = await fetch(API,{
+                method: 'DELETE', 
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${accessToken}`,
+                }
+            })
+
+            if (!response.ok){
+                const error = await response.json(); 
+                console.log("fail to delete")
+            }else {
+                console.log("Lift deleted successfully!");
+                setLifts((prevLifts) => prevLifts.filter((lift) => lift.id !== liftId)) //filtering out the deleted lift
+                
+            }
+
+        }catch(error){
+            console.error("Unexpected error:", error);
+            alert("An unexpected error occurred. Please try again.");
+        }
+    }
 
     if (loading) return <Spinner />
 
@@ -74,15 +104,18 @@ export default function LiftList({liftCategoryId}: LiftListProps){
             borderRadius="$4">
                 {lifts.length === 0 ? (
                     <Container>
-                        <Title>No records added</Title>
+                        <Title>No records have been added</Title>
                     </Container>
                     
                 ) : (
                     
                     lifts.map((lift) => (
                             <ListItem key={lift.id} subTitle={lift.date} marginBottom={3} borderRadius={10}>
-                                <XStack>
-                                    <Title color={"$blue8Light"}>{lift.weight_lifted} <SubTitle>kg</SubTitle></Title>
+                                <XStack flex={1} justifyContent="space-between" alignItems="center">
+                                    <Title color={"$blue8Light"}>{lift.weight_lifted} <SubTitle fontWeight={500}>kg</SubTitle></Title>
+                                    <Button onPress={()=>handleDelete(lift.id)} size={'$2'} borderRadius={50} backgroundColor={"$red9Light"}>
+                                        <Paragraph fontSize={'$1'} fontWeight={500}>Remove</Paragraph>  
+                                    </Button>
                                 </XStack>
                             </ListItem>
                     ))

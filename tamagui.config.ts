@@ -40,7 +40,7 @@ export const Main = styled(YStack, {
 
 export const Title = styled(Text, {
   fontSize: 30,
-  fontWeight: '600',
+  fontWeight: '400',
   color: '$blue4Dark', 
   marginBottom: 10,
   alignItems:'center',
@@ -48,7 +48,7 @@ export const Title = styled(Text, {
 
 export const SubTitle = styled(Text, {
     fontSize: 18,
-    fontWeight: '400',
+    fontWeight: '200',
     color: '$blue0Light', 
     marginBottom: 10,
   });
