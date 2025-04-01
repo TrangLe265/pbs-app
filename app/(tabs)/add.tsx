@@ -19,6 +19,7 @@ import supabase from "@/utility/supabaseClient";
 import token from "@/utility/token";
 import userId from "@/utility/userId";
 
+//this file take care of the adding new item logic
 export default function AddScreen() {
     const [category, setCategory] = useState(0);
     const [weight, setWeight] = useState(0);
@@ -81,6 +82,7 @@ export default function AddScreen() {
                 setCategory(0);
                 setWeight(0);
                 setDate(new Date());
+                setFormKey(formKey+1); //to reset the form
             }
         } catch (error) {
             console.error("Unexpected error:", error);
@@ -168,4 +170,3 @@ export default function AddScreen() {
         </Container>
     );
 }
-// Import the handleSubmit function from the service file

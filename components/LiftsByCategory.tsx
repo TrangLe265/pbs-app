@@ -13,8 +13,7 @@ import {
 } from "tamagui";
 import { Container, SubTitle, Title } from '@/tamagui.config';
 import token from "@/utility/token";
-import userId from "@/utility/userId";
-
+import { Alert } from 'react-native';
 
 //this file define a generic flow for all the Lifts by Category Screen (Squat Screen, Bench Screen, Deadlift Screen)
 interface LiftListProps {
@@ -95,6 +94,17 @@ export default function LiftList({liftCategoryId}: LiftListProps){
         }
     }
 
+    const confirmDelete = (liftId: number) => {
+        Alert.alert(
+            "Confirm Deletion",
+            "Are you sure you want to remove this record?",
+            [
+                { text: "Cancel", style: "cancel" },
+                { text: "Yes", onPress: () => handleDelete(liftId) }
+            ]
+        );
+    };
+
     if (loading) return <Spinner />
 
     return(
@@ -113,7 +123,7 @@ export default function LiftList({liftCategoryId}: LiftListProps){
                             <ListItem key={lift.id} subTitle={lift.date} marginBottom={3} borderRadius={10}>
                                 <XStack flex={1} justifyContent="space-between" alignItems="center">
                                     <Title color={"$blue8Light"}>{lift.weight_lifted} <SubTitle fontWeight={500}>kg</SubTitle></Title>
-                                    <Button onPress={()=>handleDelete(lift.id)} size={'$2'} borderRadius={50} backgroundColor={"$red9Light"}>
+                                    <Button onPress={()=>confirmDelete(lift.id)} size={'$2'} borderRadius={50} backgroundColor={"$red9Light"}>
                                         <Paragraph fontSize={'$1'} fontWeight={500}>Remove</Paragraph>  
                                     </Button>
                                 </XStack>
