@@ -12,7 +12,7 @@ This mobile application helps users track their weightlifting progress by loggin
 
 ## Video demonstration:
 
-<iframe width="560" height="315" src="[https://www.youtube.com/embed/https://youtu.be/M1889JHJ1l4]" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="[https://www.youtube.com/embed/M1889JHJ1l4]" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## 🚀 Setup & Running Locally
 
