@@ -37,7 +37,8 @@ export default function LiftList({liftCategoryId}: LiftListProps){
         const fetchLifts = async() => {
         
             const accessToken = await token(); 
-            const API = `http://localhost:3000/lifts/${liftCategoryId}`; 
+            const baseURL = process.env.EXPO_PUBLIC_API_URL_ADD || "https://your-default-api-url.com/add"; 
+        const API = `${baseURL}/${liftCategoryId}`; 
     
             try{
                 console.log("Attempt to show all data by category")
@@ -71,9 +72,10 @@ export default function LiftList({liftCategoryId}: LiftListProps){
     const handleDelete = async (liftId: number) => {
         console.log(`Deleting lift with ID: ${liftId}`); // Debugging log
         const accessToken = await token();
-        const API = `http://localhost:3000/lifts/${liftId}`;
-
+        const baseURL = process.env.EXPO_PUBLIC_API_URL_ADD || "https://your-default-api-url.com/add"; 
+        const API = `${baseURL}/${liftId}`; 
         try {
+            console.log(API);
             const response = await fetch(API, {
                 method: "DELETE",
                 headers: {

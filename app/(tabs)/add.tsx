@@ -41,7 +41,7 @@ export default function AddScreen() {
         const accessToken = await token(); // Fetch the token asynchronously
 
         const API_URL_ADD = process.env.EXPO_PUBLIC_API_URL_ADD || "https://your-default-api-url.com/add";
-
+        
         if (!category || !weight || !date) {
             setMessage("Missing fields");
             alert("Missing fields");
@@ -60,8 +60,6 @@ export default function AddScreen() {
 
         try {
             console.log("Attempt to add new data");
-
-            
 
             const response = await fetch(API_URL_ADD, {
                 method: "POST",
